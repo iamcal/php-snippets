@@ -5,11 +5,8 @@
 		$out = '';
 		while($data){
 			$block = substr($data,0,8);
-			$val = bindec($block);
-			$ch = chr($val);
-			$out .= $ch;
 			$data = substr($data,8);
-			echo "$block -&gt; $val -&gt; $ch<br>";
+			$out .= chr(bindec($block));
 		}
 		return $out;
 	}
