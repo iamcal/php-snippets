@@ -1,0 +1,41 @@
+--- Smarty.class.php_2.6.6	Mon Jun  6 08:04:21 2005
++++ Smarty.class.php_patched	Mon Jun  6 08:04:22 2005
+@@ -398,6 +398,8 @@
+      */
+     var $config_class          =   'Config_File';
+ 
++    var $current_template = null;
++
+ /**#@+
+  * END Smarty Configuration Section
+  * There should be no need to touch anything below this line.
+@@ -1112,6 +1114,8 @@
+     function fetch($resource_name, $cache_id = null, $compile_id = null, $display = false)
+     {
+         static $_cache_info = array();
++
++        $this->current_template = array($resource_name);
+         
+         $_smarty_old_error_level = $this->debugging ? error_reporting() : error_reporting(isset($this->error_reporting)
+                ? $this->error_reporting : error_reporting() & ~E_NOTICE);
+@@ -1862,7 +1866,9 @@
+         if ($this->_is_compiled($params['smarty_include_tpl_file'], $_smarty_compile_path)
+             || $this->_compile_resource($params['smarty_include_tpl_file'], $_smarty_compile_path))
+         {
++            $this->current_template[] = $params['smarty_include_tpl_file'];
+             include($_smarty_compile_path);
++            array_pop($this->current_template);
+         }
+ 
+         // pop the local vars off the front of the stack
+@@ -1931,6 +1937,10 @@
+     }
+     /**#@-*/
+ 
++    function current_template()
++    {
++        return $this->current_template[count($this->current_template)-1];
++    }
+ }
+ 
+ /* vim: set expandtab: */
