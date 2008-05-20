@@ -1,0 +1,23 @@
+Sending email from PHP in UTF-8 is pretty easy:
+
+
+	$to = "\"$to_name\" <$to_email>";
+
+	$headers = "From: \"$from_name\" <$from_email>\r\nReply-To: $from_email\r\nContent-Type: text/plain; charset=utf-8";
+
+	$args = "-f$from_email";
+
+	mail($to, $subject, wordwrap($email, 60), $headers, $args);
+
+
+But the subject line and to/from names don't use the content-type of the body, so how do you include unicode characters in them? By using quoted printable:
+
+
+	function mail_escape_header($subject){
+		$subject = preg_replace('/([^a-z ])/ie', 'sprintf("=%02x",ord(StripSlashes("\\1")))', $subject);
+		$subject = str_replace(' ', '_', $subject);
+		return "=?utf-8?Q?$subject?=";
+	}
+
+
+And that's it :)
