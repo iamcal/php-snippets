@@ -28,17 +28,22 @@
  */
 
 	function smarty_function_implode($params){
+		$from = !empty($params['from']) ? $params['from'] : array();
+		$pre = !empty($params['pre']) ? $params['pre'] : '';
+		$post = !empty($params['post']) ? $params['post'] : '';
+		$none = !empty($params['none']) ? $params['none'] : '';
+		$delim = !empty($params['delim']) ? $params['delim'] : ',';
 
-		if (!count($params['from'])){
-			return $params['none'];
+		if (!count($from)){
+			return $none;
 		}
 
 		$src = array();
-		foreach($params['from'] as $item){
-			$src[] = $params['pre'].$item.$params['post'];
+		foreach($from as $item){
+			$src[] = $pre.$item.$post;
 		}
 
-		return implode($params['delim'], $src);
+		return implode($delim, $src);
 	}
 
 ?>
