@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Key Event Test</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+
+$(function(){
+	$(document).keydown(function(e){
+		log('keydown', e);
+	}).keyup(function(e){
+		log('keyup', e);
+	}).keypress(function(e){
+		log('keypress', e);
+	});
+});
+
+function log(msg, e){
+
+	var str = msg+' keyCode='+e.keyCode;
+
+	if (e.altKey) str += ' [alt]';
+	if (e.ctrlKey) str += ' [ctrl]';
+	if (e.metaKey) str += ' [meta]';
+	if (e.shiftKey) str += ' [shift]';
+
+	if (e.originalEvent.altKey) str += ' [o-alt]';
+	if (e.originalEvent.ctrlKey) str += ' [o-ctrl]';
+	if (e.originalEvent.metaKey) str += ' [o-meta]';
+	if (e.originalEvent.shiftKey) str += ' [o-shift]';
+
+	var d = $('<div/>').text(str);
+	$('#log').append(d);
+}
+
+</script>
+</head>
+<body>
+
+<div id="log"></div>
+
+</body>
+</html>
